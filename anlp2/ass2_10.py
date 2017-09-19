@@ -2,16 +2,16 @@
 import re
 import cfg_fix
 from cfg_fix import parse_grammar, Tree
-from cky import CKY
+from cky_10 import CKY
 
 def tokenise(tokenstring):
   '''Split a string into a list of tokens
 
   We treat punctuation as
   separate tokens, and split contractions into their parts.
-
+  
   So for example "I'm leaving." --> ["I","'m","leaving","."]
-
+  
   :type tokenstring: str
   :param tokenstring the string to be tokenised
   :rtype: list(str)
@@ -44,16 +44,16 @@ Relpro -> 'that'
 
 print (grammar)
 chart=CKY(grammar)
-chart.recognise("the frogs swim".split()) # Should use
+chart.parse("the frogs swim".split()) # Should use
                                           # tokenise(s) once that's fixed
 chart.pprint()
 
 # Q1: Uncomment this once you've completed Q1
-chart.recognise(tokenise("the frogs swim"),True)
+chart.parse(tokenise("the frogs swim"),True)
 # Q3 Uncomment the next three once when you're working on Q3
-chart.recognise(tokenise("fish fish"))
+chart.parse(tokenise("fish fish"))
 chart.pprint()
-chart.recognise(tokenise("fish fish"),True)
+chart.parse(tokenise("fish fish"),True)
 
 # Use this grammar for the rest of the assignment
 grammar2=parse_grammar([
@@ -80,7 +80,7 @@ grammar2=parse_grammar([
 "VPio -> Vdt NP",
 "PP -> Prep NP",
 "Det -> 'a' | 'the'",
-"Nmp -> 'salad' | 'mushrooms'",
+"Nmp -> 'salad' | 'mushrooms'", 
 "Nsc -> 'book' | 'fork' | 'flight' | 'salad' | 'drawing'",
 "Prep -> 'to' | 'with'",
 "Vi -> 'ate'",
@@ -111,17 +111,27 @@ for s in ["John gave a book to Mary.",
           "Can you book a flight to London?",
           "Why did John book the flight?",
           "John told Mary that he will book a flight today."]:
-    print (s, chart2.recognise(tokenise(s)))
+    print (s, chart2.parse(tokenise(s)))
     chart2.pprint()
 
-
-# Q8
-# for s in [...]:
-#     print s, chart2.parse(tokenise(s))
-#     print chart2.first_tree().pprint()
+# Q10
+for s in ["John gave a book to Mary.",
+          "John gave Mary a book.",
+          "John gave Mary a nice drawing book.",
+          "John ate salad with mushrooms with a fork.",
+          "Book a flight to NYC.",
+          "Can you book a flight to London?",
+          "Why did John book the flight?",
+          "John told Mary that he will book a flight today."]:
+    print s, chart2.parse(tokenise(s))
+    print chart2.firstTree().pprint()
 
 # Q9
 # for s in [...]:
 #     print s, chart2.parse(tokenise(s))
 #     for tree in chart2.all_trees():
 #         print tree.pprint()
+
+
+
+

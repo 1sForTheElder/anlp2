@@ -1,5 +1,4 @@
-import sys
-import re
+import sys,re
 import nltk
 from collections import defaultdict
 import cfg_fix
@@ -60,6 +59,7 @@ class CKY:
         :type productions: nltk.grammar.Production, as fixed by cfg_fix
         :param productions: the productions to be split and stored in a new way
         '''
+
 
         self.unary=defaultdict(list)
         self.binary=defaultdict(list)
@@ -123,7 +123,15 @@ class CKY:
         # Adding all the binary rules
         self.binaryScan()
         # Replace the line below for Q6
-        return self.grammar.start() in self.matrix[0][self.n-1].labels()
+        if self.grammar.start() in self.matrix[0][self.n-1].labels():
+            # Calculating the number of successful analyses
+            Analyses_n = 0
+            for i in self.matrix[0][self.n-1].labels():
+                if i == self.grammar.start():
+                    Analyses_n += 1
+            return Analyses_n
+        else:
+            return False
 
     def unaryFill(self):
         '''Q3: add docstring here, and add comments throughout
